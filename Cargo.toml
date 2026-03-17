@@ -1,0 +1,33 @@
+[package]
+name = "imap-gmail-tool"
+version = "0.1.0"
+edition = "2021"
+description = "MCP server for reading Gmail via IMAP, designed for ironclaw agents"
+
+[[bin]]
+name = "imap-gmail-tool"
+path = "src/main.rs"
+
+[dependencies]
+# Serialization — JSON for MCP protocol and tool responses
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# IMAP — connect to Gmail and read/search/delete emails
+imap = "2"
+# imap-proto is imap's own dependency; we reference its Address type directly
+imap-proto = "0.10"
+native-tls = "0.2"
+
+# Email parsing — decode RFC822 messages (MIME, encodings, multipart)
+mailparse = "0.15"
+
+# SMTP — send emails via Gmail's SMTP relay
+lettre = { version = "0.11", features = ["native-tls", "smtp-transport", "builder"] }
+
+# Error handling — clean error types without boilerplate
+thiserror = "2"
+
+[profile.release]
+opt-level = "s"   # optimise for binary size, not speed (we're I/O bound anyway)
+strip = true      # strip debug symbols → smaller binary

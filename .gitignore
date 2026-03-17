@@ -1,0 +1,6 @@
+/target
+
+# Never commit credentials
+.env
+*.env
+config.toml
